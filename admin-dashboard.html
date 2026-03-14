@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard • Negozi De Fummo</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="dark">
+  <header class="site-header">
+    <div class="container header__inner">
+      <a class="brand" href="index.html">
+        <span class="brand__logo">N</span>
+        <span class="brand__name">NEGOZIO<br/><span class="brand__sub">DE FUMMO</span></span>
+      </a>
+      <nav class="nav">
+        <a class="nav__item" href="index.html#shop">SHOP</a>
+        <a class="nav__item" href="admin-dashboard.html">DASHBOARD</a>
+        <a class="nav__item" href="#" id="logoutButton">Admin</a>
+        <a class="nav__icon" href="index.html#cart" aria-label="Cart">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.16 14l.84-2h7.74l.86 2H7.16zM5.21 4l1.04 4h12.24l1.7 4H7.8l-1.8-7H1V4h4.21z" fill="currentColor"/>
+          </svg>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="dashboard">
+    <div class="container">
+      <header class="dashboard__header">
+        <h1>Admin Dashboard</h1>
+        <p>Manage inventory and track sales</p>
+      </header>
+
+      <div class="dashboard__stats">
+        <div class="stat">
+          <p class="stat__label">Revenue</p>
+          <p class="stat__value" data-stat="revenue">₱0.00</p>
+        </div>
+        <div class="stat">
+          <p class="stat__label">Total Orders</p>
+          <p class="stat__value" data-stat="orders">0</p>
+        </div>
+        <div class="stat">
+          <p class="stat__label">Products</p>
+          <p class="stat__value" data-stat="products">0</p>
+        </div>
+        <div class="stat">
+          <p class="stat__label">Low stock</p>
+          <p class="stat__value" data-stat="low-stock">0</p>
+        </div>
+      </div>
+
+      <div class="dashboard__tabs">
+        <button class="dashboard__tab dashboard__tab--active" id="inventoryTabButton" type="button">Inventory Management</button>
+        <button class="dashboard__tab" id="salesTabButton" type="button">Sales Tracking</button>
+      </div>
+
+      <section class="dashboard__panel" id="inventoryPanel">
+        <div class="dashboard__panel-header">
+          <h2>Products</h2>
+          <button class="btn btn--secondary" id="addProductButton">+ Add Product</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="productTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="dashboard__panel" id="salesPanel" style="display:none;">
+        <div class="dashboard__panel-header">
+          <h2>Sales Tracking</h2>
+        </div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Items</th>
+                <th>Subtotal</th>
+                <th>Shipping</th>
+                <th>Total</th>
+                <th>Receipt</th>
+              </tr>
+            </thead>
+            <tbody id="salesTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="modal" id="addProductModal" aria-hidden="true">
+    <div class="modal__backdrop" data-modal-close></div>
+    <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="addProductTitle">
+      <header class="modal__header">
+        <h2 id="addProductTitle">Add New Product</h2>
+        <button class="modal__close" data-modal-close aria-label="Close">×</button>
+      </header>
+      <form id="addProductForm">
+        <label>
+          Product name
+          <input type="text" id="addProductName" required />
+        </label>
+
+        <label>
+          Description
+          <textarea id="addProductDescription" rows="4" required></textarea>
+        </label>
+
+        <div class="modal__row">
+          <label>
+            Price ($)
+            <input type="number" id="addProductPrice" min="0" step="0.01" required />
+          </label>
+          <label>
+            Stock
+            <input type="number" id="addProductStock" min="0" step="1" required />
+          </label>
+        </div>
+
+        <label>
+          Category
+          <select id="addProductCategory" required>
+            <option value="" disabled selected>Select category</option>
+            <option value="disposable">Disposable</option>
+            <option value="pods">Pods</option>
+            <option value="e-juice">E-Juice</option>
+            <option value="accessories">Accessories</option>
+          </select>
+        </label>
+
+        <label>
+          Image (upload)
+          <input type="file" id="addProductImage" accept="image/*" required />
+        </label>
+
+        <div class="modal__actions">
+          <button class="btn btn--primary" type="submit">Add product</button>
+          <button class="btn btn--secondary" type="button" data-modal-close>Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="auth.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-0AtJYIEmpR+k7PL7suZGTyqm8xey9b9p0eGgZzKZ694+KkAee8sX+gozEFoCqZJGeBa7h2+PMmaIIRj4mAgE2Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="inventory.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      requireAdmin();
+
+      const inventoryTabButton = document.getElementById('inventoryTabButton');
+      const salesTabButton = document.getElementById('salesTabButton');
+      const inventoryPanel = document.getElementById('inventoryPanel');
+      const salesPanel = document.getElementById('salesPanel');
+
+      function showInventory() {
+        inventoryPanel.style.display = '';
+        salesPanel.style.display = 'none';
+        inventoryTabButton.classList.add('dashboard__tab--active');
+        salesTabButton.classList.remove('dashboard__tab--active');
+      }
+
+      function showSales() {
+        inventoryPanel.style.display = 'none';
+        salesPanel.style.display = '';
+        inventoryTabButton.classList.remove('dashboard__tab--active');
+        salesTabButton.classList.add('dashboard__tab--active');
+      }
+
+      inventoryTabButton.addEventListener('click', showInventory);
+      salesTabButton.addEventListener('click', () => {
+        showSales();
+        if (typeof renderSales === 'function') {
+          renderSales();
+        }
+      });
+
+      // Default to inventory view when admin opens dashboard.
+      showInventory();
+
+      const logoutBtn = document.getElementById('logoutButton');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', (event) => {
+          event.preventDefault();
+          logout();
+        });
+      }
+
+      // Keep sales stats updated after each order.
+      if (typeof updateSalesStats === 'function') {
+        updateSalesStats();
+      }
+    });
+  </script>
+</body>
+</html>

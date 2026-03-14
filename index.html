@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Negozio De Fummo</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="age-gate" id="ageGate" aria-hidden="true">
+    <div class="age-gate__card" role="dialog" aria-modal="true" aria-labelledby="ageGateTitle">
+      <h1 id="ageGateTitle">Age Verification</h1>
+      <p>Are you 18 years old or older?</p>
+      <div class="age-gate__actions">
+        <button class="btn btn--primary" id="ageYes">YES (I AM 18+)</button>
+        <button class="btn btn--secondary" id="ageNo">NO (UNDER 18)</button>
+      </div>
+      <p class="age-gate__footnote">By entering this site, you confirm that you are of legal age.</p>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header__inner">
+      <a class="brand" href="#">
+        <span class="brand__logo">N</span>
+        <span class="brand__name">NEGOZIO<br/><span class="brand__sub">DE FUMMO</span></span>
+      </a>
+
+      <nav class="nav">
+        <a class="nav__item" href="index.html#shop">SHOP</a>
+        <a class="nav__icon" href="login.html" aria-label="Account">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
+          </svg>
+        </a>
+        <a class="nav__icon" href="#" aria-label="Cart" id="cartButton">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.16 14l.84-2h7.74l.86 2H7.16zM5.21 4l1.04 4h12.24l1.7 4H7.8l-1.8-7H1V4h4.21z" fill="currentColor"/>
+          </svg>
+          <span class="cart-badge" id="cartCount">0</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero__inner">
+        <h1 class="hero__title">FUMMO</h1>
+        <p class="hero__subtitle">"Every flavor that hits"</p>
+        <a class="btn btn--primary btn--lg" href="#featured">EXPLORE COLLECTION →</a>
+      </div>
+    </section>
+
+    <section class="featured" id="featured">
+      <div class="container featured__inner">
+        <div class="featured__header">
+          <h2>Featured</h2>
+          <a class="featured__view-all" href="#shop">VIEW ALL</a>
+        </div>
+        <div class="cards">
+          <article class="card">
+            <img class="card__image" src="/images/Wenax-Q2.webp" alt="Wenax Q2" loading="lazy" />
+            <div class="card__body">
+              <h3 class="card__title">Wenax Q2</h3>
+              <p class="card__price">₱800</p>
+            </div>
+          </article>
+
+          <article class="card">
+            <img class="card__image" src="/images/Aegis 5 mini.png" alt="Aegis 5 mini" loading="lazy" />
+            <div class="card__body">
+              <h3 class="card__title">Aegis 5 mini</h3>
+              <p class="card__price">₱1100</p>
+            </div>
+          </article>
+
+          <article class="card">
+            <img class="card__image" src="/images/Geekvape-Max100-Kit-list.webp" alt="Geekvape Max100 Kit" loading="lazy" />
+            <div class="card__body">
+              <h3 class="card__title">Geekvape Max100 Kit</h3>
+              <p class="card__price">₱1500</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="shop" id="shop">
+      <div class="container">
+        <header class="shop__header">
+          <div>
+            <h2>Shop</h2>
+            <p class="shop__subtitle">Explore our complete collection</p>
+          </div>
+          <nav class="shop__tabs" aria-label="Shop categories">
+            <button class="shop__tab shop__tab--active" type="button">All</button>
+            <button class="shop__tab" type="button">Pods</button>
+            <button class="shop__tab" type="button">Disposable</button>
+            <button class="shop__tab" type="button">E-Juice</button>
+            <button class="shop__tab" type="button">Accessories</button>
+          </nav>
+        </header>
+
+        <div class="cards" id="shopCards"></div>
+      </div>
+    </section>
+
+    <section class="philosophy">
+      <div class="container">
+        <h2>Our Philosophy</h2>
+        <p class="philosophy__copy">We believe in creating timeless pieces that transcend trends. Each item is carefully crafted to deliver exceptional quality and enduring style. Our minimalist approach focuses on essential designs that work seamlessly with your lifestyle.</p>
+        <div class="philosophy__grid">
+          <div class="philosophy__card">
+            <h3>WE PURSUE</h3>
+            <p>To produce innovation experience for the electronic cigarette industry.</p>
+          </div>
+          <div class="philosophy__card">
+            <h3>WE BELIEVE</h3>
+            <p>Vaping makes your life healthier.</p>
+          </div>
+          <div class="philosophy__card">
+            <h3>WE INSIST</h3>
+            <p>Community，Open-mind，Up-to-date.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <h3>FUMMO</h3>
+        <p>Every flavor that hits.</p>
+      </div>
+      <div class="footer__links">
+        <div class="footer__column">
+          <h4>SHOP</h4>
+          <a href="#shop">All Products</a>
+          <a href="#shop">New Arrivals</a>
+          <a href="#shop">Sale</a>
+        </div>
+        <div class="footer__column">
+          <h4>SUPPORT</h4>
+          <a href="#contact">Contact</a>
+          <a href="#shipping">Shipping</a>
+          <a href="#returns">Returns</a>
+        </div>
+        <div class="footer__column">
+          <h4>ACCOUNT</h4>
+          <a href="#login">Login</a>
+          <a href="#signup">Sign Up</a>
+          <a href="#admin">Admin</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 NEGOZIO DE FUMMO. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-0AtJYIEmpR+k7PL7suZGTyqm8xey9b9p0eGgZzKZ694+KkAee8sX+gozEFoCqZJGeBa7h2+PMmaIIRj4mAgE2Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="script.js"></script>
+  <script src="inventory.js"></script>
+
+  <div class="modal" id="orderPlacedModal" aria-hidden="true">
+    <div class="modal__backdrop" data-modal-close></div>
+    <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="orderPlacedTitle">
+      <header class="modal__header">
+        <h2 id="orderPlacedTitle">Order placed successfully!</h2>
+        <button class="modal__close" data-modal-close aria-label="Close">×</button>
+      </header>
+      <p>Thank you for your purchase.</p>
+      <div class="modal__actions">
+        <button class="btn btn--secondary" data-modal-close>OK</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="productModal" aria-hidden="true">
+    <div class="modal__backdrop" data-modal-close></div>
+    <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
+      <header class="modal__header">
+        <h2 id="productModalTitle">Product</h2>
+        <button class="modal__close" data-modal-close aria-label="Close">×</button>
+      </header>
+      <div class="product-detail">
+        <div class="product-detail__image">
+          <img id="productModalImage" src="" alt="" />
+        </div>
+        <div class="product-detail__info">
+          <p class="product-detail__category" id="productModalCategory"></p>
+          <h3 class="product-detail__title" id="productModalName"></h3>
+          <p class="product-detail__price" id="productModalPrice"></p>
+          <p class="product-detail__desc" id="productModalDescription"></p>
+          <p class="product-detail__stock" id="productModalStock"></p>
+
+          <div class="product-detail__quantity">
+            <label>Quantity</label>
+            <div class="quantity-controls">
+              <button type="button" class="btn btn--secondary" id="productModalQtyDecrease">−</button>
+              <input type="number" id="productModalQty" min="1" value="1" />
+              <button type="button" class="btn btn--secondary" id="productModalQtyIncrease">+</button>
+            </div>
+          </div>
+
+          <button class="btn btn--primary" id="productModalAddToCart">Add to cart</button>
+          <button class="btn btn--secondary" id="productModalBuyNow">Buy now</button>
+
+          <div class="product-detail__specs" id="productModalSpecs">
+            <h3>Specifications</h3>
+            <ul id="productModalSpecsList"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cart" id="cartPanel" aria-hidden="true">
+    <div class="cart__backdrop" data-cart-close></div>
+    <div class="cart__drawer">
+      <header class="cart__header">
+        <h2>Shopping Cart</h2>
+        <button class="cart__close" data-cart-close aria-label="Close">×</button>
+      </header>
+      <div class="cart__body">
+        <div class="cart__items" id="cartItems"></div>
+      </div>
+      <div class="cart__summary">
+        <div class="cart__row">
+          <span>Subtotal</span>
+          <span id="cartSubtotal">$0.00</span>
+        </div>
+        <div class="cart__row">
+          <span>Shipping</span>
+          <span id="cartShipping">$10.00</span>
+        </div>
+        <p class="cart__free-shipping" id="cartFreeShippingNotice"></p>
+        <div class="cart__row cart__total">
+          <span>Total</span>
+          <span id="cartTotal">$0.00</span>
+        </div>
+        <button class="btn btn--primary" id="cartCheckout">Checkout</button>
+        <button class="btn btn--secondary" id="cartContinue">Continue shopping</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
