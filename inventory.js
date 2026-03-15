@@ -348,6 +348,87 @@ function setupSalesActions() {
   });
 }
 
+function initializeCheckoutPage() {
+  const checkoutPage = document.getElementById("checkoutPage");
+  if (!checkoutPage) return;
+
+  const checkoutForm = document.getElementById("checkoutForm");
+  const successMessage = document.getElementById("checkoutSuccess");
+
+  function renderSummary() {
+    const cart = getCart();
+    const products = getStoredProducts();
+    const totals = calculateCartTotals(cart, products);
+
+    const itemsContainer = document.getElementById("checkoutSummaryItems");
+    const subtotalEl = document.getElementById("checkoutSubtotal");
+    const shippingEl = document.getElementById("checkoutShipping");
+    const totalEl = document.getElementById("checkoutTotal");
+
+    if (itemsContainer) {
+      itemsContainer.innerHTML = "";
+      cart.forEach((item) => {
+        const product = findProduct(products, item.id);
+        if (!product) return;
+
+        const row = document.createElement("div");
+        row.className = "checkout__summary-item";
+        row.innerHTML = `
+          <span>${product.name} × ${item.qty}</span>
+          <span>${formatCurrency(product.price * item.qty)}</span>
+        `;
+        itemsContainer.appendChild(row);
+      });
+    }
+
+    if (subtotalEl) subtotalEl.textContent = formatCurrency(totals.subtotal);
+    if (shippingEl) shippingEl.textContent = formatCurrency(totals.shipping);
+    if (totalEl) totalEl.textContent = formatCurrency(totals.total);
+  }
+
+  function showSuccess(message) {
+    if (!successMessage) return;
+    successMessage.textContent = message;
+    successMessage.style.color = "#1b5e20";
+    successMessage.style.fontWeight = "600";
+  }
+
+  if (checkoutForm) {
+    checkoutForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(checkoutForm);
+      const shippingInfo = {
+        name: formData.get("name")?.toString().trim() || "",
+        email: formData.get("email")?.toString().trim() || "",
+        phone: formData.get("phone")?.toString().trim() || "",
+        address: formData.get("address")?.toString().trim() || "",
+        city: formData.get("city")?.toString().trim() || "",
+        zip: formData.get("zip")?.toString().trim() || "",
+        country: formData.get("country")?.toString().trim() || "",
+      };
+
+      const missingFields = [];
+      if (!shippingInfo.name) missingFields.push("Name");
+      if (!shippingInfo.email) missingFields.push("Email");
+      if (!shippingInfo.phone) missingFields.push("Phone");
+      if (!shippingInfo.address) missingFields.push("Address");
+      if (!shippingInfo.city) missingFields.push("City");
+      if (!shippingInfo.zip) missingFields.push("Zip Code");
+
+      if (missingFields.length) {
+        alert(`Please complete the following required field(s): ${missingFields.join(", ")}`);
+        return;
+      }
+
+      placeOrder(shippingInfo);
+      showSuccess("Order placed successfully! We'll send a confirmation to your email.");
+    });
+  }
+
+  renderSummary();
+}
+
 function renderCart(cart) {
   const products = getStoredProducts() || [];
   const itemsContainer = document.getElementById("cartItems");
@@ -635,6 +716,97 @@ function setupShopInteractions(products) {
     });
   }
 
+  const checkoutModal = document.getElementById("checkoutModal");
+  const checkoutForm = document.getElementById("checkoutForm");
+
+  function openCheckoutModal() {
+    if (checkoutForm) {
+      checkoutForm.reset();
+      const firstField = checkoutForm.querySelector("input, select, textarea");
+      if (firstField) firstField.focus();
+    }
+
+    const cart = getCart();
+    const products = getStoredProducts();
+    const totals = calculateCartTotals(cart, products);
+
+    const itemsContainer = document.getElementById("checkoutSummaryItems");
+    const subtotalEl = document.getElementById("checkoutSubtotal");
+    const shippingEl = document.getElementById("checkoutShipping");
+    const totalEl = document.getElementById("checkoutTotal");
+
+    if (itemsContainer) {
+      itemsContainer.innerHTML = "";
+      cart.forEach((item) => {
+        const product = findProduct(products, item.id);
+        if (!product) return;
+
+        const row = document.createElement("div");
+        row.className = "checkout__summary-item";
+        row.innerHTML = `
+          <span>${product.name} × ${item.qty}</span>
+          <span>${formatCurrency(product.price * item.qty)}</span>
+        `;
+        itemsContainer.appendChild(row);
+      });
+    }
+
+    if (subtotalEl) subtotalEl.textContent = formatCurrency(totals.subtotal);
+    if (shippingEl) shippingEl.textContent = formatCurrency(totals.shipping);
+    if (totalEl) totalEl.textContent = formatCurrency(totals.total);
+
+    if (checkoutModal) {
+      checkoutModal.setAttribute("aria-hidden", "false");
+    }
+  }
+
+  function closeCheckoutModal() {
+    if (checkoutModal) {
+      checkoutModal.setAttribute("aria-hidden", "true");
+    }
+  }
+
+  function placeOrder(shippingInfo) {
+    const cart = getCart();
+    const products = getStoredProducts();
+    const totals = calculateCartTotals(cart, products);
+
+    const order = {
+      id: `ORD-${Date.now()}`,
+      date: new Date().toISOString(),
+      customer: shippingInfo,
+      items: cart.map((item) => {
+        const product = findProduct(products, item.id);
+        return {
+          id: item.id,
+          name: product?.name ?? "Unknown",
+          price: product?.price ?? 0,
+          qty: item.qty,
+        };
+      }),
+      subtotal: totals.subtotal,
+      shipping: totals.shipping,
+      total: totals.total,
+    };
+
+    addOrder(order);
+    updateSalesStats();
+
+    // Deduct sold quantities from inventory
+    cart.forEach((item) => {
+      const product = findProduct(products, item.id);
+      if (product) {
+        product.stock = Math.max(0, product.stock - item.qty);
+      }
+    });
+    updateAll(products);
+
+    setCart([]);
+    closeCart();
+    closeCheckoutModal();
+    openOrderPlacedModal();
+  }
+
   if (cartCheckout) {
     cartCheckout.addEventListener("click", () => {
       const cart = getCart();
@@ -643,41 +815,40 @@ function setupShopInteractions(products) {
         return;
       }
 
-      const products = getStoredProducts();
-      const totals = calculateCartTotals(cart, products);
+      closeCart();
+      window.location.href = "checkout.html";
+    });
+  }
 
-      const order = {
-        id: `ORD-${Date.now()}`,
-        date: new Date().toISOString(),
-        items: cart.map((item) => {
-          const product = findProduct(products, item.id);
-          return {
-            id: item.id,
-            name: product?.name ?? "Unknown",
-            price: product?.price ?? 0,
-            qty: item.qty,
-          };
-        }),
-        subtotal: totals.subtotal,
-        shipping: totals.shipping,
-        total: totals.total,
+  if (checkoutForm) {
+    checkoutForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(checkoutForm);
+      const shippingInfo = {
+        name: formData.get("name")?.toString().trim() || "",
+        email: formData.get("email")?.toString().trim() || "",
+        phone: formData.get("phone")?.toString().trim() || "",
+        address: formData.get("address")?.toString().trim() || "",
+        city: formData.get("city")?.toString().trim() || "",
+        zip: formData.get("zip")?.toString().trim() || "",
+        country: formData.get("country")?.toString().trim() || "",
       };
 
-      addOrder(order);
-      updateSalesStats();
+      const missingFields = [];
+      if (!shippingInfo.name) missingFields.push("Name");
+      if (!shippingInfo.email) missingFields.push("Email");
+      if (!shippingInfo.phone) missingFields.push("Phone");
+      if (!shippingInfo.address) missingFields.push("Address");
+      if (!shippingInfo.city) missingFields.push("City");
+      if (!shippingInfo.zip) missingFields.push("Zip Code");
 
-      // Deduct sold quantities from inventory
-      cart.forEach((item) => {
-        const product = findProduct(products, item.id);
-        if (product) {
-          product.stock = Math.max(0, product.stock - item.qty);
-        }
-      });
-      updateAll(products);
+      if (missingFields.length) {
+        alert(`Please complete the following required field(s): ${missingFields.join(", ")}`);
+        return;
+      }
 
-      setCart([]);
-      closeCart();
-      openOrderPlacedModal();
+      placeOrder(shippingInfo);
     });
   }
 
@@ -711,6 +882,15 @@ function setupShopInteractions(products) {
       const close = event.target.closest("[data-modal-close]");
       if (close) {
         closeOrderPlacedModal();
+      }
+    });
+  }
+
+  if (checkoutModal) {
+    checkoutModal.addEventListener("click", (event) => {
+      const close = event.target.closest("[data-modal-close]");
+      if (close) {
+        closeCheckoutModal();
       }
     });
   }
@@ -894,4 +1074,6 @@ window.addEventListener("DOMContentLoaded", async () => {
   setupAddProductModal(products);
   setupShopInteractions(products);
   setupSalesActions();
+  initializeCheckoutPage();
+  updateSalesStats();
 });

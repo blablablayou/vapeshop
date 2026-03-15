@@ -43,35 +43,77 @@
   </header>
 
   <main>
-    <section class="support" id="contact">
+    <section class="contact">
       <div class="container">
         <div class="support__header">
-          <h2>Contact Us</h2>
-          <p class="support__subtitle">Reach out to our team for product questions, support, or general inquiries.</p>
+          <h2>Get in Touch</h2>
+          <p class="support__subtitle">Whether you have a question about our products, need help with an order, or just want to share feedback, our team is ready to answer all your questions.</p>
         </div>
-        <div class="support__grid">
-          <div class="support__card">
-            <h3>Get in touch</h3>
-            <p>We're here to help. Use the form to send us a message and we'll get back to you within 1 business day.</p>
-            <ul class="support__list">
-              <li><strong>Email:</strong> support@fummo.shop</li>
-              <li><strong>Phone:</strong> +63 912 345 6789</li>
-              <li><strong>Address:</strong> 123 Vape Street, Manila, Philippines</li>
-            </ul>
+
+        <div class="contact__grid">
+          <div class="contact__info">
+            <div class="contact__item">
+              <div class="contact__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4 4h16v16H4V4zm2 2v2h12V6H6zm0 4v8h12v-8H6z" fill="currentColor"/>
+                </svg>
+              </div>
+              <div>
+                <h4>Email</h4>
+                <p>support@fummo.shop<br /><span class="contact__muted">We'll respond within 24 hours</span></p>
+              </div>
+            </div>
+
+            <div class="contact__item">
+              <div class="contact__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 01.93-.27c1.01.24 2.1.37 3.23.37a1 1 0 011 1V20a1 1 0 01-1 1C9.16 21 3 14.84 3 7a1 1 0 011-1h3.5a1 1 0 011 1c0 1.13.12 2.22.37 3.23a1 1 0 01-.27.93l-2.2 2.2z" fill="currentColor"/>
+                </svg>
+              </div>
+              <div>
+                <h4>Phone</h4>
+                <p>+63 912 345 6789<br /><span class="contact__muted">Mon–Fri 9am–6pm</span></p>
+              </div>
+            </div>
+
+            <div class="contact__item">
+              <div class="contact__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z" fill="currentColor"/>
+                </svg>
+              </div>
+              <div>
+                <h4>Address</h4>
+                <p>123 Vape Street<br />Manila, Philippines</p>
+              </div>
+            </div>
+
+            <div class="contact__hours">
+              <h4>Business Hours</h4>
+              <table>
+                <tr><td>Monday – Friday</td><td>9:00 AM – 6:00 PM</td></tr>
+                <tr><td>Saturday</td><td>10:00 AM – 4:00 PM</td></tr>
+                <tr><td>Sunday</td><td>Closed</td></tr>
+              </table>
+            </div>
           </div>
-          <div class="support__card support__card--form">
-            <h3>Send a message</h3>
-            <form id="contactForm">
-              <label for="contactName">Name</label>
+
+          <div class="contact__card">
+            <h3>Send us a Message</h3>
+            <form class="contact__form" id="contactForm">
+              <label for="contactName">Name *</label>
               <input type="text" id="contactName" name="name" placeholder="Your name" required />
 
-              <label for="contactEmail">Email</label>
-              <input type="email" id="contactEmail" name="email" placeholder="you@example.com" required />
+              <label for="contactEmail">Email *</label>
+              <input type="email" id="contactEmail" name="email" placeholder="your@email.com" required />
 
-              <label for="contactMessage">Message</label>
-              <textarea id="contactMessage" name="message" rows="5" placeholder="How can we help?" required></textarea>
+              <label for="contactSubject">Subject</label>
+              <input type="text" id="contactSubject" name="subject" placeholder="How can we help?" />
 
-              <button class="btn btn--primary" type="submit">Send Message</button>
+              <label for="contactMessage">Message *</label>
+              <textarea id="contactMessage" name="message" rows="5" placeholder="Tell us more about your inquiry…" required></textarea>
+
+              <button class="btn btn--primary" type="submit">SEND MESSAGE</button>
               <p class="support__note" id="contactSuccess" role="status" aria-live="polite"></p>
             </form>
           </div>

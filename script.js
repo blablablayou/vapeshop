@@ -59,10 +59,11 @@ if (contactForm) {
     event.preventDefault();
     const name = contactForm.elements["name"].value.trim();
     const email = contactForm.elements["email"].value.trim();
+    const subject = contactForm.elements["subject"]?.value.trim();
     const message = contactForm.elements["message"].value.trim();
 
     if (!name || !email || !message) {
-      contactSuccess.textContent = "Please fill in all fields.";
+      contactSuccess.textContent = "Please fill in all required fields (Name, Email, Message).";
       return;
     }
 

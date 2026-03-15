@@ -485,6 +485,134 @@ button,
   color: rgba(0, 0, 0, 0.55);
 }
 
+/* Contact page */
+.contact {
+  padding: 5rem 0 4rem;
+  background: #fff;
+}
+
+.contact__grid {
+  display: grid;
+  gap: 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  align-items: start;
+}
+
+.contact__info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.contact__item {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.contact__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.08);
+  display: grid;
+  place-items: center;
+  color: rgba(0, 0, 0, 0.75);
+  flex-shrink: 0;
+}
+
+.contact__item h4 {
+  margin: 0;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.contact__item p {
+  margin: 0.35rem 0 0;
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.contact__muted {
+  display: block;
+  font-size: 0.85rem;
+  color: rgba(0, 0, 0, 0.55);
+  margin-top: 0.25rem;
+}
+
+.contact__hours {
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 18px;
+  padding: 1.5rem;
+}
+
+.contact__hours h4 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+}
+
+.contact__hours table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.contact__hours td {
+  padding: 0.35rem 0;
+}
+
+.contact__hours td:first-child {
+  opacity: 0.75;
+}
+
+.contact__card {
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 18px;
+  padding: 2rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.contact__card h3 {
+  margin-top: 0;
+}
+
+.contact__form label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.contact__form input,
+.contact__form textarea {
+  width: 100%;
+  margin-top: 0.35rem;
+  padding: 0.85rem 0.9rem;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+}
+
+.contact__form textarea {
+  min-height: 160px;
+  resize: vertical;
+}
+
+.contact__form button {
+  width: 100%;
+  margin-top: 1.2rem;
+  padding: 1rem;
+  border-radius: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
 .site-footer {
   background: #050505;
   color: rgba(255, 255, 255, 0.8);
@@ -597,6 +725,97 @@ button,
   right: 0;
   transform: translate(40%, -40%);
   border: 2px solid rgba(255, 255, 255, 0.9);
+}
+
+/* Checkout modal */
+.checkout {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: minmax(300px, 1fr) 360px;
+}
+
+.checkout__form {
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 18px;
+  padding: 1.75rem;
+}
+
+.checkout__summary {
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 18px;
+  padding: 1.75rem;
+}
+
+.checkout__form h3,
+.checkout__summary h3 {
+  margin-top: 0;
+}
+
+.checkout__row {
+  margin-top: 1rem;
+}
+
+.checkout__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.checkout__grid .checkout__row {
+  margin-top: 0.75rem;
+}
+
+.checkout__row label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+
+.checkout__row input,
+.checkout__row select {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.checkout__note {
+  margin: 1.5rem 0 0;
+  font-size: 0.85rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.checkout__form button {
+  margin-top: 1.5rem;
+}
+
+.checkout__summary-items {
+  border-top: 1px solid rgba(0, 0, 0, 0.14);
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+.checkout__summary-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.checkout__summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.8rem;
+  font-weight: 600;
+}
+
+.checkout__summary-total {
+  font-size: 1.1rem;
+  margin-top: 1.1rem;
 }
 
 .cart {
@@ -911,6 +1130,37 @@ button,
   opacity: 1;
   visibility: visible;
   transition: opacity 180ms ease, visibility 180ms ease;
+}
+
+.page--checkout {
+  background: #fff;
+  color: #111;
+}
+
+.page--checkout .site-header {
+  background: rgba(0, 0, 0, 0.85) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.page--checkout .nav__item,
+.page--checkout .nav__icon {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.page--checkout .brand__logo {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.3));
+  color: #000;
+}
+
+.page--checkout .footer__brand h3,
+.page--checkout .footer__links a,
+.page--checkout .footer__bottom {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.page--checkout .site-footer {
+  background: #000;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .age-gate--hidden {

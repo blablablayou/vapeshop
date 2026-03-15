@@ -247,5 +247,94 @@
       </div>
     </div>
   </div>
+
+  <div class="modal" id="checkoutModal" aria-hidden="true">
+    <div class="modal__backdrop" data-modal-close></div>
+    <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+      <header class="modal__header">
+        <h2 id="checkoutTitle">Checkout</h2>
+        <button class="modal__close" data-modal-close aria-label="Close">×</button>
+      </header>
+      <div class="checkout">
+        <div class="checkout__form">
+          <h3>Shipping Information</h3>
+          <form id="checkoutForm">
+            <div class="checkout__row">
+              <label for="checkoutName">Full Name *</label>
+              <input id="checkoutName" name="name" type="text" required />
+            </div>
+            <div class="checkout__row">
+              <label for="checkoutEmail">Email *</label>
+              <input id="checkoutEmail" name="email" type="email" required />
+            </div>
+            <div class="checkout__row">
+              <label for="checkoutPhone">Phone Number *</label>
+              <input id="checkoutPhone" name="phone" type="tel" required />
+            </div>
+            <div class="checkout__row">
+              <label for="checkoutAddress">Street Address *</label>
+              <input id="checkoutAddress" name="address" type="text" required />
+            </div>
+            <div class="checkout__grid">
+              <div class="checkout__row">
+                <label for="checkoutCity">City *</label>
+                <input id="checkoutCity" name="city" type="text" required />
+              </div>
+              <div class="checkout__row">
+                <label for="checkoutState">State *</label>
+                <input id="checkoutState" name="state" type="text" required />
+              </div>
+              <div class="checkout__row">
+                <label for="checkoutZip">Zip Code *</label>
+                <input id="checkoutZip" name="zip" type="text" required />
+              </div>
+            </div>
+            <div class="checkout__row">
+              <label for="checkoutCountry">Country *</label>
+              <select id="checkoutCountry" name="country" required>
+                <option value="Philippines" selected>Philippines</option>
+                <option value="United States">United States</option>
+                <option value="Canada">Canada</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="Australia">Australia</option>
+              </select>
+            </div>
+            <p class="checkout__note">Payment will be processed securely. This is a demo, so no actual payment is required.</p>
+            <button class="btn btn--primary" type="submit">Place Order</button>
+          </form>
+        </div>
+        <div class="checkout__summary">
+          <h3>Order Summary</h3>
+          <div class="checkout__summary-items" id="checkoutSummaryItems"></div>
+          <div class="checkout__summary-row">
+            <span>Subtotal</span>
+            <span id="checkoutSubtotal">$0.00</span>
+          </div>
+          <div class="checkout__summary-row">
+            <span>Shipping</span>
+            <span id="checkoutShipping">$10.00</span>
+          </div>
+          <div class="checkout__summary-row checkout__summary-total">
+            <span>Total</span>
+            <span id="checkoutTotal">$0.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="orderPlacedModal" aria-hidden="true">
+    <div class="modal__backdrop" data-modal-close></div>
+    <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="orderPlacedTitle">
+      <header class="modal__header">
+        <h2 id="orderPlacedTitle">Order placed successfully!</h2>
+        <button class="modal__close" data-modal-close aria-label="Close">×</button>
+      </header>
+      <p>Thank you for your purchase.</p>
+      <div class="modal__actions">
+        <button class="btn btn--secondary" data-modal-close>OK</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
