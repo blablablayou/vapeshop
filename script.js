@@ -50,3 +50,27 @@ if (!isAgeVerified()) {
 } else {
   hideAgeGate();
 }
+
+// Contact form (present on index.html)
+const contactForm = document.getElementById("contactForm");
+const contactSuccess = document.getElementById("contactSuccess");
+if (contactForm) {
+  contactForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const name = contactForm.elements["name"].value.trim();
+    const email = contactForm.elements["email"].value.trim();
+    const message = contactForm.elements["message"].value.trim();
+
+    if (!name || !email || !message) {
+      contactSuccess.textContent = "Please fill in all fields.";
+      return;
+    }
+
+    contactForm.reset();
+    contactSuccess.textContent = "Thanks! Your message has been sent. We'll get back to you soon.";
+
+    setTimeout(() => {
+      contactSuccess.textContent = "";
+    }, 7000);
+  });
+}

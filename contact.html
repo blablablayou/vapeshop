@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact • Negozi De Fummo</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="age-gate" id="ageGate" aria-hidden="true">
+    <div class="age-gate__card" role="dialog" aria-modal="true" aria-labelledby="ageGateTitle">
+      <h1 id="ageGateTitle">Age Verification</h1>
+      <p>Are you 18 years old or older?</p>
+      <div class="age-gate__actions">
+        <button class="btn btn--primary" id="ageYes">YES (I AM 18+)</button>
+        <button class="btn btn--secondary" id="ageNo">NO (UNDER 18)</button>
+      </div>
+      <p class="age-gate__footnote">By entering this site, you confirm that you are of legal age.</p>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header__inner">
+      <a class="brand" href="index.html">
+        <span class="brand__logo">N</span>
+        <span class="brand__name">NEGOZIO<br/><span class="brand__sub">DE FUMMO</span></span>
+      </a>
+
+      <nav class="nav">
+        <a class="nav__item" href="index.html#shop">SHOP</a>
+        <a class="nav__icon" href="login.html" aria-label="Account">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
+          </svg>
+        </a>
+        <a class="nav__icon" href="index.html#" aria-label="Cart">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.16 14l.84-2h7.74l.86 2H7.16zM5.21 4l1.04 4h12.24l1.7 4H7.8l-1.8-7H1V4h4.21z" fill="currentColor"/>
+          </svg>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="support" id="contact">
+      <div class="container">
+        <div class="support__header">
+          <h2>Contact Us</h2>
+          <p class="support__subtitle">Reach out to our team for product questions, support, or general inquiries.</p>
+        </div>
+        <div class="support__grid">
+          <div class="support__card">
+            <h3>Get in touch</h3>
+            <p>We're here to help. Use the form to send us a message and we'll get back to you within 1 business day.</p>
+            <ul class="support__list">
+              <li><strong>Email:</strong> support@fummo.shop</li>
+              <li><strong>Phone:</strong> +63 912 345 6789</li>
+              <li><strong>Address:</strong> 123 Vape Street, Manila, Philippines</li>
+            </ul>
+          </div>
+          <div class="support__card support__card--form">
+            <h3>Send a message</h3>
+            <form id="contactForm">
+              <label for="contactName">Name</label>
+              <input type="text" id="contactName" name="name" placeholder="Your name" required />
+
+              <label for="contactEmail">Email</label>
+              <input type="email" id="contactEmail" name="email" placeholder="you@example.com" required />
+
+              <label for="contactMessage">Message</label>
+              <textarea id="contactMessage" name="message" rows="5" placeholder="How can we help?" required></textarea>
+
+              <button class="btn btn--primary" type="submit">Send Message</button>
+              <p class="support__note" id="contactSuccess" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <h3>FUMMO</h3>
+        <p>Every flavor that hits.</p>
+      </div>
+      <div class="footer__links">
+        <div class="footer__column">
+          <h4>SHOP</h4>
+          <a href="index.html#shop">All Products</a>
+          <a href="index.html#shop">New Arrivals</a>
+          <a href="index.html#shop">Sale</a>
+        </div>
+        <div class="footer__column">
+          <h4>SUPPORT</h4>
+          <a href="contact.html" target="_blank" rel="noopener">Contact</a>
+          <a href="shipping.html" target="_blank" rel="noopener">Shipping</a>
+          <a href="returns.html" target="_blank" rel="noopener">Returns</a>
+        </div>
+        <div class="footer__column">
+          <h4>ACCOUNT</h4>
+          <a href="login.html">Login</a>
+          <a href="signup.html">Sign Up</a>
+          <a href="admin-login.html">Admin</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 NEGOZIO DE FUMMO. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
