@@ -1,6 +1,7 @@
 const PRODUCTS_KEY = "negozioProducts";
 const CART_KEY = "negozioCart";
 const SALES_KEY = "negozioSales";
+const LAST_ORDER_KEY = "negozioLastOrder";
 
 function saveProducts(products) {
   try {
@@ -60,7 +61,23 @@ function addOrder(order) {
   const sales = getStoredSales();
   sales.unshift(order);
   saveSales(sales);
+  // Store the last order to display in receipt modal
+  try {
+    localStorage.setItem(LAST_ORDER_KEY, JSON.stringify(order));
+  } catch {
+    // localStorage might be disabled
+  }
   return sales;
+}
+
+function getLastOrder() {
+  try {
+    const raw = localStorage.getItem(LAST_ORDER_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
 }
 
 async function loadProducts() {
@@ -502,9 +519,75 @@ function closeCart() {
   cartPanel.setAttribute("aria-hidden", "true");
 }
 
+function populateReceiptModal(order) {
+  if (!order) return;
+
+  // Populate order details
+  const orderIdEl = document.getElementById("receiptOrderId");
+  const orderDateEl = document.getElementById("receiptOrderDate");
+  if (orderIdEl) orderIdEl.textContent = order.id || "-";
+  if (orderDateEl) orderDateEl.textContent = new Date(order.date).toLocaleString();
+
+  // Populate customer info
+  const customerNameEl = document.getElementById("receiptCustomerName");
+  const customerAddressEl = document.getElementById("receiptCustomerAddress");
+  const customerCityEl = document.getElementById("receiptCustomerCity");
+  const customerEmailEl = document.getElementById("receiptCustomerEmail");
+  const customerPhoneEl = document.getElementById("receiptCustomerPhone");
+  
+  if (customerNameEl) customerNameEl.textContent = order.customer?.name || "-";
+  if (customerAddressEl) customerAddressEl.textContent = order.customer?.address || "-";
+  if (customerCityEl) customerCityEl.textContent = `${order.customer?.city || "-"}, ${order.customer?.zip || ""}`.trim();
+  if (customerEmailEl) customerEmailEl.textContent = order.customer?.email || "-";
+  if (customerPhoneEl) customerPhoneEl.textContent = order.customer?.phone || "-";
+
+  // Populate items
+  const itemsContainer = document.getElementById("receiptItems");
+  if (itemsContainer) {
+    itemsContainer.innerHTML = "";
+    order.items?.forEach((item) => {
+      const itemRow = document.createElement("div");
+      itemRow.style.cssText = "display: flex; justify-content: space-between; margin: 5px 0; font-size: 0.9em;";
+      itemRow.innerHTML = `
+        <span>${item.qty}x ${item.name}</span>
+        <span>${formatCurrency(item.price * item.qty)}</span>
+      `;
+      itemsContainer.appendChild(itemRow);
+    });
+  }
+
+  // Populate totals
+  const subtotalEl = document.getElementById("receiptSubtotal");
+  const shippingEl = document.getElementById("receiptShipping");
+  const totalEl = document.getElementById("receiptTotal");
+  if (subtotalEl) subtotalEl.textContent = formatCurrency(order.subtotal);
+  if (shippingEl) shippingEl.textContent = formatCurrency(order.shipping);
+  if (totalEl) totalEl.textContent = formatCurrency(order.total);
+
+  // Setup download button
+  const downloadBtn = document.getElementById("downloadReceiptBtn");
+  if (downloadBtn) {
+    downloadBtn.onclick = () => {
+      const pdf = createReceiptPdf(order);
+      if (!pdf) {
+        alert("Unable to generate PDF. Please try again.");
+        return;
+      }
+      pdf.save(`receipt-${order.id}.pdf`);
+    };
+  }
+}
+
 function openOrderPlacedModal() {
   const modal = document.getElementById("orderPlacedModal");
   if (!modal) return;
+  
+  // Get the most recent order and populate the receipt
+  const order = getLastOrder();
+  if (order) {
+    populateReceiptModal(order);
+  }
+  
   modal.setAttribute("aria-hidden", "false");
 }
 
