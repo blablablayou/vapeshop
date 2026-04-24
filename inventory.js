@@ -603,39 +603,102 @@ function createReceiptPdf(order) {
     if (!jsPDF) return null;
 
     const doc = new jsPDF({ unit: "pt", format: "letter" });
+    const pageWidth = doc.internal.pageSize.getWidth();
     const padding = 40;
-    const lineHeight = 18;
+    const lineHeight = 14;
     let cursorY = padding;
 
-    doc.setFontSize(18);
-    doc.text("N E G O Z I O  D E  F U M M O", padding, cursorY);
+    // Header
+    doc.setFontSize(22);
+    doc.text("NEGOZIO DE FUMMO", pageWidth / 2, cursorY, { align: "center" });
+    cursorY += lineHeight + 5;
+
+    doc.setFontSize(10);
+    doc.text("Order Receipt", pageWidth / 2, cursorY, { align: "center" });
+    cursorY += lineHeight * 2;
+
+    // Order Info
+    doc.setFontSize(11);
+    doc.text(`Order ID: ${order.id || "-"}`, padding, cursorY);
+    cursorY += lineHeight;
+    doc.text(`Date: ${new Date(order.date).toLocaleString()}`, padding, cursorY);
     cursorY += lineHeight * 1.5;
+
+    // Customer Info Section
+    doc.setFontSize(12);
+    doc.text("SHIPPING TO:", padding, cursorY);
+    cursorY += lineHeight;
+    
+    doc.setFontSize(11);
+    const customer = order.customer || {};
+    doc.text(`${customer.name || "-"}`, padding, cursorY);
+    cursorY += lineHeight;
+    doc.text(`${customer.address || "-"}`, padding, cursorY);
+    cursorY += lineHeight;
+    doc.text(`${customer.city || "-"}, ${customer.zip || "-"}`, padding, cursorY);
+    cursorY += lineHeight;
+    doc.text(`${customer.country || "-"}`, padding, cursorY);
+    cursorY += lineHeight;
+    doc.text(`Email: ${customer.email || "-"}`, padding, cursorY);
+    cursorY += lineHeight;
+    doc.text(`Phone: ${customer.phone || "-"}`, padding, cursorY);
+    cursorY += lineHeight * 1.5;
+
+    // Items Section
+    doc.setLineWidth(0.5);
+    doc.line(padding, cursorY, pageWidth - padding, cursorY);
+    cursorY += lineHeight;
 
     doc.setFontSize(12);
-    doc.text(`Order Date: ${new Date(order.date).toLocaleString()}`, padding, cursorY);
-    cursorY += lineHeight;
-    doc.text(`Order ID: ${order.id || "-"}`, padding, cursorY);
-    cursorY += lineHeight * 1.5;
+    doc.text("ITEMS ORDERED:", padding, cursorY);
+    cursorY += lineHeight * 1.2;
 
-    doc.setFontSize(14);
-    doc.text("Items:", padding, cursorY);
+    // Column headers
+    doc.setFontSize(10);
+    doc.text("QTY", padding, cursorY);
+    doc.text("PRODUCT", padding + 50, cursorY);
+    doc.text("PRICE", pageWidth - padding - 120, cursorY);
+    doc.text("TOTAL", pageWidth - padding - 60, cursorY);
     cursorY += lineHeight;
+    doc.line(padding, cursorY, pageWidth - padding, cursorY);
+    cursorY += lineHeight * 0.8;
 
-    order.items.forEach((item) => {
-      doc.setFontSize(12);
-      doc.text(`${item.qty} x ${item.name} @ ${formatCurrency(item.price)}`, padding, cursorY);
-      const lineTotal = formatCurrency(item.price * item.qty);
-      doc.text(lineTotal, 440, cursorY, { align: "right" });
+    // Items
+    order.items?.forEach((item) => {
+      doc.text(String(item.qty), padding, cursorY);
+      doc.text(item.name, padding + 50, cursorY);
+      doc.text(formatCurrency(item.price), pageWidth - padding - 120, cursorY);
+      doc.text(formatCurrency(item.price * item.qty), pageWidth - padding - 60, cursorY);
       cursorY += lineHeight;
     });
 
+    cursorY += lineHeight * 0.5;
+    doc.line(padding, cursorY, pageWidth - padding, cursorY);
     cursorY += lineHeight;
+
+    // Totals
+    doc.setFontSize(11);
+    const colX = pageWidth - padding - 150;
+    doc.text("Subtotal:", colX, cursorY);
+    doc.text(formatCurrency(order.subtotal), pageWidth - padding - 60, cursorY, { align: "right" });
+    cursorY += lineHeight;
+
+    doc.text("Shipping:", colX, cursorY);
+    doc.text(formatCurrency(order.shipping), pageWidth - padding - 60, cursorY, { align: "right" });
+    cursorY += lineHeight;
+
     doc.setFontSize(12);
-    doc.text(`Subtotal: ${formatCurrency(order.subtotal)}`, padding, cursorY);
+    doc.setFont(undefined, "bold");
+    doc.text("TOTAL:", colX, cursorY);
+    doc.text(formatCurrency(order.total), pageWidth - padding - 60, cursorY, { align: "right" });
+    doc.setFont(undefined, "normal");
+    cursorY += lineHeight * 2;
+
+    // Footer
+    doc.setFontSize(9);
+    doc.text("Thank you for your purchase!", pageWidth / 2, cursorY, { align: "center" });
     cursorY += lineHeight;
-    doc.text(`Shipping: ${formatCurrency(order.shipping)}`, padding, cursorY);
-    cursorY += lineHeight;
-    doc.text(`Total: ${formatCurrency(order.total)}`, padding, cursorY);
+    doc.text("© 2026 NEGOZIO DE FUMMO. All rights reserved.", pageWidth / 2, cursorY, { align: "center" });
 
     return doc;
   } catch (error) {
