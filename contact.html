@@ -7,14 +7,29 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="age-gate" id="ageGate" aria-hidden="true">
+  <div class="age-gate age-gate--hidden" id="ageGate" aria-hidden="true">
     <div class="age-gate__card" role="dialog" aria-modal="true" aria-labelledby="ageGateTitle">
-      <h1 id="ageGateTitle">Age Verification</h1>
-      <p>Are you 18 years old or older?</p>
-      <div class="age-gate__actions">
-        <button class="btn btn--primary" id="ageYes">YES (I AM 18+)</button>
-        <button class="btn btn--secondary" id="ageNo">NO (UNDER 18)</button>
-      </div>
+      <h1 id="ageGateTitle">ADULTS ONLY (18+)</h1>
+      <p class="age-gate__intro">The sale or distribution of Vaporized Nicotine and Non-Nicotine Products to or by persons below eighteen (18) years of age is illegal. THESE PRODUCTS ARE HARMFUL AND CONTAIN NICOTINE WHICH IS A HIGHLY ADDICTIVE SUBSTANCE. IT IS NOT RECOMMENDED FOR USE BY NONSMOKERS.</p>
+      <p class="age-gate__subtext">Select your DATE OF BIRTH below. Click Enter only if you are at least 18 years of age. (Please note that we don't save this information in our database.)</p>
+      <form class="age-gate__form" id="ageGateForm">
+        <div class="age-gate__select-group">
+          <select id="ageMonth" aria-label="Month">
+            <option value="">- Month -</option>
+          </select>
+          <select id="ageDay" aria-label="Day">
+            <option value="">- Day -</option>
+          </select>
+          <select id="ageYear" aria-label="Year">
+            <option value="">- Year -</option>
+          </select>
+        </div>
+        <p class="age-gate__error" id="ageError" aria-live="polite"></p>
+        <div class="age-gate__actions">
+          <button class="btn btn--primary" type="submit">ENTER</button>
+          <button class="btn btn--secondary" type="button" id="ageExit">Exit</button>
+        </div>
+      </form>
       <p class="age-gate__footnote">By entering this site, you confirm that you are of legal age.</p>
     </div>
   </div>
@@ -22,7 +37,7 @@
   <header class="site-header">
     <div class="container header__inner">
       <a class="brand" href="index.html">
-        <span class="brand__logo">N</span>
+        <img class="brand__logo" src="images/logo.png" alt="Negozio de Fummo logo">
         <span class="brand__name">NEGOZIO<br/><span class="brand__sub">DE FUMMO</span></span>
       </a>
 
@@ -157,3 +172,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+
