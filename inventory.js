@@ -297,7 +297,7 @@ function renderSales(sales) {
       <td>${formatCurrency(order.total)}</td>
       <td class="sales__actions">
         <button class="btn btn--secondary" data-action="download-receipt" data-order-id="${order.id}">
-          Download
+          View Receipt
         </button>
         <button class="btn btn--danger" data-action="delete-sale" data-order-id="${order.id}">
           Delete
@@ -341,18 +341,7 @@ function setupSalesActions() {
     if (!order) return;
 
     if (action === "download-receipt") {
-      try {
-        const pdf = createReceiptPdf(order);
-        if (!pdf) {
-          console.error("PDF generation returned null for order:", orderId);
-          alert("Unable to generate receipt. Please try again.");
-          return;
-        }
-        pdf.save(`receipt-${order.id}.pdf`);
-      } catch (err) {
-        console.error("Error downloading receipt:", err);
-        alert("Error downloading receipt: " + err.message);
-      }
+      openReceiptInNewTab(order);
       return;
     }
 
@@ -573,18 +562,7 @@ function populateReceiptModal(order) {
   const downloadBtn = document.getElementById("downloadReceiptBtn");
   if (downloadBtn) {
     downloadBtn.onclick = () => {
-      try {
-        const pdf = createReceiptPdf(order);
-        if (!pdf) {
-          console.error("PDF generation returned null");
-          alert("Unable to generate PDF. The jsPDF library may not have loaded properly. Please refresh the page and try again.");
-          return;
-        }
-        pdf.save(`receipt-${order.id}.pdf`);
-      } catch (err) {
-        console.error("Error downloading receipt:", err);
-        alert("Error downloading receipt. Please try again. Error: " + err.message);
-      }
+      openReceiptInNewTab(order);
     };
   }
 }
@@ -610,115 +588,68 @@ function closeOrderPlacedModal() {
 
 function createReceiptPdf(order) {
   try {
-    // Access jsPDF from the UMD build
-    const jsPDFLib = window.jspdf?.jsPDF;
-    if (!jsPDFLib) {
-      console.error("jsPDF library not loaded");
-      return null;
-    }
+    const { jsPDF } = window.jspdf || {};
+    if (!jsPDF) return null;
 
-    const doc = new jsPDFLib({ unit: "pt", format: "letter" });
-    const pageWidth = doc.internal.pageSize.getWidth();
+    const doc = new jsPDF({ unit: "pt", format: "letter" });
     const padding = 40;
-    const lineHeight = 14;
+    const lineHeight = 18;
     let cursorY = padding;
 
-    // Header
-    doc.setFontSize(22);
-    doc.text("NEGOZIO DE FUMMO", pageWidth / 2, cursorY, { align: "center" });
-    cursorY += lineHeight + 5;
+    doc.setFontSize(18);
+    doc.text("N E G O Z I O  D E  F U M M O", padding, cursorY);
+    cursorY += lineHeight * 1.5;
 
-    doc.setFontSize(10);
-    doc.text("Order Receipt", pageWidth / 2, cursorY, { align: "center" });
-    cursorY += lineHeight * 2;
-
-    // Order Info
-    doc.setFontSize(11);
+    doc.setFontSize(12);
+    doc.text(`Order Date: ${new Date(order.date).toLocaleString()}`, padding, cursorY);
+    cursorY += lineHeight;
     doc.text(`Order ID: ${order.id || "-"}`, padding, cursorY);
-    cursorY += lineHeight;
-    doc.text(`Date: ${new Date(order.date).toLocaleString()}`, padding, cursorY);
     cursorY += lineHeight * 1.5;
 
-    // Customer Info Section
-    doc.setFontSize(12);
-    doc.text("SHIPPING TO:", padding, cursorY);
-    cursorY += lineHeight;
-    
-    doc.setFontSize(11);
-    const customer = order.customer || {};
-    doc.text(`${customer.name || "-"}`, padding, cursorY);
-    cursorY += lineHeight;
-    doc.text(`${customer.address || "-"}`, padding, cursorY);
-    cursorY += lineHeight;
-    doc.text(`${customer.city || "-"}, ${customer.zip || "-"}`, padding, cursorY);
-    cursorY += lineHeight;
-    doc.text(`${customer.country || "-"}`, padding, cursorY);
-    cursorY += lineHeight;
-    doc.text(`Email: ${customer.email || "-"}`, padding, cursorY);
-    cursorY += lineHeight;
-    doc.text(`Phone: ${customer.phone || "-"}`, padding, cursorY);
-    cursorY += lineHeight * 1.5;
-
-    // Items Section
-    doc.setLineWidth(0.5);
-    doc.line(padding, cursorY, pageWidth - padding, cursorY);
+    doc.setFontSize(14);
+    doc.text("Items:", padding, cursorY);
     cursorY += lineHeight;
 
-    doc.setFontSize(12);
-    doc.text("ITEMS ORDERED:", padding, cursorY);
-    cursorY += lineHeight * 1.2;
-
-    // Column headers
-    doc.setFontSize(10);
-    doc.text("QTY", padding, cursorY);
-    doc.text("PRODUCT", padding + 50, cursorY);
-    doc.text("PRICE", pageWidth - padding - 120, cursorY);
-    doc.text("TOTAL", pageWidth - padding - 60, cursorY);
-    cursorY += lineHeight;
-    doc.line(padding, cursorY, pageWidth - padding, cursorY);
-    cursorY += lineHeight * 0.8;
-
-    // Items
-    order.items?.forEach((item) => {
-      doc.text(String(item.qty), padding, cursorY);
-      doc.text(item.name, padding + 50, cursorY);
-      doc.text(formatCurrency(item.price), pageWidth - padding - 120, cursorY);
-      doc.text(formatCurrency(item.price * item.qty), pageWidth - padding - 60, cursorY);
+    order.items.forEach((item) => {
+      doc.setFontSize(12);
+      doc.text(`${item.qty} x ${item.name} @ ${formatCurrency(item.price)}`, padding, cursorY);
+      const lineTotal = formatCurrency(item.price * item.qty);
+      doc.text(lineTotal, 440, cursorY, { align: "right" });
       cursorY += lineHeight;
     });
 
-    cursorY += lineHeight * 0.5;
-    doc.line(padding, cursorY, pageWidth - padding, cursorY);
     cursorY += lineHeight;
-
-    // Totals
-    doc.setFontSize(11);
-    const colX = pageWidth - padding - 150;
-    doc.text("Subtotal:", colX, cursorY);
-    doc.text(formatCurrency(order.subtotal), pageWidth - padding - 60, cursorY, { align: "right" });
-    cursorY += lineHeight;
-
-    doc.text("Shipping:", colX, cursorY);
-    doc.text(formatCurrency(order.shipping), pageWidth - padding - 60, cursorY, { align: "right" });
-    cursorY += lineHeight;
-
     doc.setFontSize(12);
-    doc.setFont(undefined, "bold");
-    doc.text("TOTAL:", colX, cursorY);
-    doc.text(formatCurrency(order.total), pageWidth - padding - 60, cursorY, { align: "right" });
-    doc.setFont(undefined, "normal");
-    cursorY += lineHeight * 2;
-
-    // Footer
-    doc.setFontSize(9);
-    doc.text("Thank you for your purchase!", pageWidth / 2, cursorY, { align: "center" });
+    doc.text(`Subtotal: ${formatCurrency(order.subtotal)}`, padding, cursorY);
     cursorY += lineHeight;
-    doc.text("© 2026 NEGOZIO DE FUMMO. All rights reserved.", pageWidth / 2, cursorY, { align: "center" });
+    doc.text(`Shipping: ${formatCurrency(order.shipping)}`, padding, cursorY);
+    cursorY += lineHeight;
+    doc.text(`Total: ${formatCurrency(order.total)}`, padding, cursorY);
 
     return doc;
   } catch (error) {
-    console.error("PDF generation error:", error);
+    // If jsPDF isn't available or fails, ignore
     return null;
+  }
+}
+
+function openReceiptInNewTab(order) {
+  try {
+    const pdf = createReceiptPdf(order);
+    if (!pdf) {
+      alert("Unable to generate receipt. Please try again.");
+      return;
+    }
+    
+    // Open the PDF in a new tab
+    const pdfBlob = pdf.output('blob');
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    window.open(pdfUrl, '_blank');
+    
+    // Clean up the object URL after a delay
+    setTimeout(() => URL.revokeObjectURL(pdfUrl), 5000);
+  } catch (error) {
+    alert("Unable to open receipt. Please try again.");
   }
 }
 
