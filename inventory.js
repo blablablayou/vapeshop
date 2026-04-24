@@ -341,13 +341,18 @@ function setupSalesActions() {
     if (!order) return;
 
     if (action === "download-receipt") {
-      const pdf = createReceiptPdf(order);
-      if (!pdf) {
-        alert("Unable to generate receipt. Try again later.");
-        return;
+      try {
+        const pdf = createReceiptPdf(order);
+        if (!pdf) {
+          console.error("PDF generation returned null for order:", orderId);
+          alert("Unable to generate receipt. Please try again.");
+          return;
+        }
+        pdf.save(`receipt-${order.id}.pdf`);
+      } catch (err) {
+        console.error("Error downloading receipt:", err);
+        alert("Error downloading receipt: " + err.message);
       }
-
-      pdf.save(`receipt-${order.id}.pdf`);
       return;
     }
 
@@ -568,12 +573,18 @@ function populateReceiptModal(order) {
   const downloadBtn = document.getElementById("downloadReceiptBtn");
   if (downloadBtn) {
     downloadBtn.onclick = () => {
-      const pdf = createReceiptPdf(order);
-      if (!pdf) {
-        alert("Unable to generate PDF. Please try again.");
-        return;
+      try {
+        const pdf = createReceiptPdf(order);
+        if (!pdf) {
+          console.error("PDF generation returned null");
+          alert("Unable to generate PDF. The jsPDF library may not have loaded properly. Please refresh the page and try again.");
+          return;
+        }
+        pdf.save(`receipt-${order.id}.pdf`);
+      } catch (err) {
+        console.error("Error downloading receipt:", err);
+        alert("Error downloading receipt. Please try again. Error: " + err.message);
       }
-      pdf.save(`receipt-${order.id}.pdf`);
     };
   }
 }
@@ -599,10 +610,14 @@ function closeOrderPlacedModal() {
 
 function createReceiptPdf(order) {
   try {
-    const { jsPDF } = window.jspdf || {};
-    if (!jsPDF) return null;
+    // Access jsPDF from the UMD build
+    const jsPDFLib = window.jspdf?.jsPDF;
+    if (!jsPDFLib) {
+      console.error("jsPDF library not loaded");
+      return null;
+    }
 
-    const doc = new jsPDF({ unit: "pt", format: "letter" });
+    const doc = new jsPDFLib({ unit: "pt", format: "letter" });
     const pageWidth = doc.internal.pageSize.getWidth();
     const padding = 40;
     const lineHeight = 14;
@@ -702,7 +717,7 @@ function createReceiptPdf(order) {
 
     return doc;
   } catch (error) {
-    // If jsPDF isn't available or fails, ignore
+    console.error("PDF generation error:", error);
     return null;
   }
 }
