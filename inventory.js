@@ -189,20 +189,24 @@ function renderAdmin(products) {
     const row = document.createElement("tr");
 
     row.innerHTML = `
-      <td class="product-info">
-        <img src="${product.image}" alt="${product.name}" />
-        <div>
-          <strong>${product.name}</strong>
-          <span>${product.description}</span>
+      <td>
+        <div class="product-info">
+          <img src="${product.image}" alt="${product.name}" />
+          <div>
+            <strong>${product.name}</strong>
+            <span>${product.description}</span>
+          </div>
         </div>
       </td>
       <td>${product.category}</td>
       <td>${formatCurrency(product.price)}</td>
       <td class="${product.stock <= 5 ? "text-danger" : "text-success"}">${product.stock}</td>
-      <td class="actions">
-        <button class="btn btn--secondary" data-action="sell" data-index="${index}">Sell</button>
-        <button class="btn btn--secondary" data-action="edit" data-index="${index}">✎</button>
-        <button class="btn btn--secondary" data-action="delete" data-index="${index}">🗑️</button>
+      <td>
+        <div class="actions">
+          <button class="btn btn--secondary" data-action="sell" data-index="${index}">Sell</button>
+          <button class="btn btn--secondary" data-action="edit" data-index="${index}">Edit</button>
+          <button class="btn btn--danger" data-action="delete" data-index="${index}">Delete</button>
+        </div>
       </td>
     `;
 
@@ -702,6 +706,49 @@ function openProductModal(product) {
     qtyInput.max = String(product.stock);
   }
 
+  const flavorsContainer = document.getElementById("productModalFlavors");
+  const flavorsList = document.getElementById("productModalFlavorsList");
+  
+  if (flavorsContainer && flavorsList) {
+    if (product.category.toLowerCase() === "disposable" || product.category.toLowerCase() === "disposables") {
+      const flavors = [
+        "Battery/Device Random Color (BATTERY ONLY)",
+        "Amber (TOBACCO)(POD ONLY)",
+        "Blue Brust (BLUEBERRY ICE) 🥶 (POD ONLY)",
+        "Mystery Burst (MIXED BERRIES) 🥶 (POD ONLY)",
+        "Gold Slice (MANGO ICE) 🥶 (POD ONLY)",
+        "Purple Haze (GRAPES) 🥶 (POD ONLY)",
+        "Red Tropic (WATERMELON ICE) 🥶 (POD ONLY)",
+        "Icy Heart (STRAWBERRY ICE) 🥶 (POD ONLY)",
+        "Golden Sunburst (YAKULT) 🥶 (POD ONLY)",
+        "Red Tropic Bubble (WATERMELON BUBBLEGUM) 🥶 (POD ONLY)",
+        "Purple Burst (TARO ICE CREAM) 🥶 (POD ONLY)",
+        "Violet Eclipse (BLACKCURRANT ICE) 🥶 (POD ONLY)",
+        "Rosy Breeze (LYCHEE ICE) 🥶 (POD ONLY)",
+        "Mellow Mist (MELONA ICE CREAM) 🥶 (POD ONLY)",
+        "Velvet Silk (NEW YORK CHEESECAKE) 🥶 (POD ONLY)",
+        "Icy Breeze (MENTHOL) 🥶 (POD ONLY)",
+        "Ocean Yellow Mist (SEA SALT LEMON) 🥶 (POD ONLY)"
+      ];
+      
+      flavorsList.innerHTML = flavors.map((f, i) => `
+        <button type="button" class="flavor-btn ${i === 0 ? 'flavor-btn--active' : ''}">${f}</button>
+      `).join("");
+      
+      const btns = flavorsList.querySelectorAll(".flavor-btn");
+      btns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          btns.forEach(b => b.classList.remove("flavor-btn--active"));
+          btn.classList.add("flavor-btn--active");
+        });
+      });
+      
+      flavorsContainer.style.display = "block";
+    } else {
+      flavorsContainer.style.display = "none";
+    }
+  }
+
   const addToCartBtn = document.getElementById("productModalAddToCart");
   if (addToCartBtn) {
     addToCartBtn.dataset.productId = product.id;
@@ -1103,12 +1150,7 @@ function setupAdminActions(products) {
     }
 
     if (action === "edit") {
-      const newStock = prompt("Enter new stock quantity:", String(product.stock));
-      const parsed = Number(newStock);
-      if (!Number.isNaN(parsed)) {
-        product.stock = parsed;
-        updateAll(products);
-      }
+      openEditProductModal(product);
     }
 
     if (action === "delete") {
@@ -1203,12 +1245,99 @@ function setupAddProductModal(products) {
   });
 }
 
+function openEditProductModal(product) {
+  const modal = document.getElementById("editProductModal");
+  if (!modal) return;
+  
+  // Populate form
+  document.getElementById("editProductId").value = product.id;
+  document.getElementById("editProductName").value = product.name || "";
+  document.getElementById("editProductDescription").value = product.description || "";
+  document.getElementById("editProductPrice").value = product.price || 0;
+  document.getElementById("editProductStock").value = product.stock || 0;
+  document.getElementById("editProductCategory").value = (product.category || "").toLowerCase();
+  
+  // Reset image input
+  const imageInput = document.getElementById("editProductImage");
+  if (imageInput) imageInput.value = "";
+
+  modal.setAttribute("aria-hidden", "false");
+  document.getElementById("editProductName")?.focus();
+}
+
+function closeEditProductModal() {
+  const modal = document.getElementById("editProductModal");
+  if (!modal) return;
+  modal.setAttribute("aria-hidden", "true");
+}
+
+function setupEditProductModal(products) {
+  const modal = document.getElementById("editProductModal");
+  const form = document.getElementById("editProductForm");
+
+  if (!modal || !form) return;
+
+  modal.addEventListener("click", (event) => {
+    const closeTarget = event.target.closest("[data-modal-close]");
+    if (closeTarget) {
+      closeEditProductModal();
+    }
+  });
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const id = document.getElementById("editProductId")?.value;
+    const name = document.getElementById("editProductName")?.value.trim() || "";
+    const description = document.getElementById("editProductDescription")?.value.trim() || "";
+    const price = Number(document.getElementById("editProductPrice")?.value || "0");
+    const stock = Number(document.getElementById("editProductStock")?.value || "0");
+    const category = document.getElementById("editProductCategory")?.value.trim() || "";
+    const imageInput = document.getElementById("editProductImage");
+    const file = imageInput?.files?.[0];
+
+    if (!name || !category) {
+      alert("Please fill in required fields.");
+      return;
+    }
+
+    const product = products.find(p => p.id === id);
+    if (!product) return;
+
+    product.name = name;
+    product.description = description;
+    product.price = price;
+    product.stock = stock;
+    product.category = category;
+
+    if (file) {
+      const readFileAsDataUrl = (f) =>
+        new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(f);
+        });
+
+      try {
+        product.image = await readFileAsDataUrl(file);
+      } catch {
+        // Keep old image if there's an error
+      }
+    }
+
+    updateAll(products);
+    closeEditProductModal();
+  });
+}
+
 window.addEventListener("DOMContentLoaded", async () => {
   const products = await loadProducts();
   renderShop(products);
   renderAdmin(products);
   setupAdminActions(products);
   setupAddProductModal(products);
+  setupEditProductModal(products);
   setupShopInteractions(products);
   setupSalesActions();
   initializeCheckoutPage();

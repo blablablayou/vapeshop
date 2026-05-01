@@ -149,3 +149,18 @@ if (contactForm) {
     }, 7000);
   });
 }
+
+// Hero Carousel
+const heroCarousel = document.getElementById("heroCarousel");
+if (heroCarousel) {
+  const slides = heroCarousel.querySelectorAll(".hero__slide");
+  let currentSlide = 0;
+
+  if (slides.length > 1) {
+    setInterval(() => {
+      slides[currentSlide].classList.remove("active");
+      currentSlide = (currentSlide + 1) % slides.length;
+      slides[currentSlide].classList.add("active");
+    }, 4000); // 4 second interval
+  }
+}

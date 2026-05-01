@@ -60,6 +60,10 @@
 
   <main>
     <section class="hero">
+      <div class="hero__carousel" id="heroCarousel">
+        <div class="hero__slide active" style="background-image: url('images/1.jpg')"></div>
+        <div class="hero__slide" style="background-image: url('images/2.jpg')"></div>
+      </div>
       <div class="container hero__inner">
         <h1 class="hero__title">FUMMO</h1>
         <p class="hero__subtitle">"Every flavor that hits"</p>
@@ -212,6 +216,11 @@
           <p class="product-detail__desc" id="productModalDescription"></p>
           <p class="product-detail__stock" id="productModalStock"></p>
 
+          <div class="product-detail__flavors" id="productModalFlavors" style="display: none;">
+            <label>Flavor Options</label>
+            <div class="flavor-options" id="productModalFlavorsList"></div>
+          </div>
+
           <div class="product-detail__quantity">
             <label>Quantity</label>
             <div class="quantity-controls">
@@ -222,7 +231,7 @@
           </div>
 
           <button class="btn btn--primary" id="productModalAddToCart">Add to cart</button>
-          <button class="btn btn--secondary" id="productModalBuyNow">Buy now</button>
+          <button class="btn btn--primary" id="productModalBuyNow">Buy now</button>
 
           <div class="product-detail__specs" id="productModalSpecs">
             <h3>Specifications</h3>
@@ -258,7 +267,7 @@
           <span id="cartTotal">$0.00</span>
         </div>
         <button class="btn btn--primary" id="cartCheckout">Checkout</button>
-        <button class="btn btn--secondary" id="cartContinue">Continue shopping</button>
+        <button class="btn btn--primary" id="cartContinue">Continue shopping</button>
       </div>
     </div>
   </div>
