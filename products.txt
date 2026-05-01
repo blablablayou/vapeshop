@@ -1,4 +1,4 @@
-Wenax Q2|Pods|800|24|images/wenax-q2.svg|Premium all-in-one pod device with a sleek design and strong flavor delivery.
-MONOCHROME HOODIE|Tops|85|15|https://images.unsplash.com/photo-1503342452485-86e52a086be9?auto=format&fit=crop&w=180&q=80|Heavyweight hoodie with premium finish. Comfort meets style.
-TAILORED PANTS|Bottoms|95|20|https://images.unsplash.com/photo-1520975917568-2b4a4bf7150d?auto=format&fit=crop&w=180&q=80|Modern fit pants with clean lines. Versatile and comfortable.
-CLASSIC CAP|Accessories|35|30|https://images.unsplash.com/photo-1520975917568-2b4a4bf7150d?auto=format&fit=crop&w=180&q=80|Structured cap with embroidered details. Timeless accessory.
+Wenax Q2|Pods|800|24|images/wenax-q2.svg|Premium all-in-one pod device with a sleek design and strong flavor delivery.|Pod Capacity: 3mL/2mL (TPD), Output Power: 30W Max, Battery Capacity: 1250mAh, Charging: 5V/2A, Pod Resistance: 0.4/0.6/0.8/1.2Ω
+MONOCHROME HOODIE|Tops|85|15|https://images.unsplash.com/photo-1503342452485-86e52a086be9?auto=format&fit=crop&w=180&q=80|Heavyweight hoodie with premium finish. Comfort meets style.|Material: 100% Cotton, Sizes: S-XXL, Colors: Black/White/Gray
+TAILORED PANTS|Bottoms|95|20|https://images.unsplash.com/photo-1520975917568-2b4a4bf7150d?auto=format&fit=crop&w=180&q=80|Modern fit pants with clean lines. Versatile and comfortable.|Material: Polyester Blend, Sizes: 28-40, Fit: Modern Slim
+CLASSIC CAP|Accessories|35|30|https://images.unsplash.com/photo-1520975917568-2b4a4bf7150d?auto=format&fit=crop&w=180&q=80|Structured cap with embroidered details. Timeless accessory.|Material: Cotton Twill, Adjustable: Yes, One Size

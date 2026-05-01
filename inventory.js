@@ -95,7 +95,7 @@ async function loadProducts() {
       .map((line) => line.trim())
       .filter(Boolean)
       .map((line) => {
-        const [name, category, price, stock, image, description] = line.split("|");
+        const [name, category, price, stock, image, description, specs] = line.split("|");
         return {
           id: name?.trim() ?? "",
           name: name?.trim() ?? "",
@@ -104,6 +104,7 @@ async function loadProducts() {
           stock: Number(stock) || 0,
           image: image?.trim() ?? "",
           description: description?.trim() ?? "",
+          specs: specs?.trim() ?? "",
         };
       });
 
@@ -139,6 +140,8 @@ function renderShop(products, filter = null) {
   visibleProducts.forEach((product) => {
     const card = document.createElement("article");
     card.className = "card";
+    card.style.cursor = "pointer";
+    card.setAttribute("data-product-id", product.id);
 
     card.innerHTML = `
       <img class="card__image" src="${product.image}" alt="${product.name}" loading="lazy" />
@@ -152,6 +155,14 @@ function renderShop(products, filter = null) {
         </div>
       </div>
     `;
+
+    // Make entire card clickable to open product modal
+    card.addEventListener("click", (e) => {
+      // Don't open modal if clicking on buttons
+      if (e.target.closest("button")) return;
+      const product = findProduct(products, product.id);
+      if (product) openProductModal(product);
+    });
 
     container.appendChild(card);
   });
@@ -211,6 +222,15 @@ function setCart(cart) {
 
 function findProduct(products, id) {
   return products.find((p) => p.id === id);
+}
+
+// Helper function to open product modal by name (for featured products)
+async function openFeaturedProduct(productName) {
+  const products = await loadProducts();
+  const product = products.find((p) => p.name.toLowerCase() === productName.toLowerCase() || p.id.toLowerCase() === productName.toLowerCase());
+  if (product) {
+    openProductModal(product);
+  }
 }
 
 function addToCart(products, id, quantity = 1) {
@@ -695,17 +715,42 @@ function openProductModal(product) {
   const specsList = document.getElementById("productModalSpecsList");
   if (specsList) {
     specsList.innerHTML = "";
-    const specs = product.name === "Wenax Q2" ? [
-      { label: "Pod Capacity", value: "3mL/2mL (TPD)" },
-      { label: "Output Power", value: "30W Max" },
-      { label: "Battery Capacity", value: "1250mAh" },
-      { label: "Charging", value: "5V/2A" },
-      { label: "Pod Resistance", value: "0.4/0.6/0.8/1.2Ω" },
-    ] : [];
+
+    // Use specs from product data if available
+    let specs = [];
+    if (product.specs) {
+      specs = product.specs.split(",").map(s => {
+        const [label, ...valueParts] = s.trim().split(":");
+        return { label: label.trim(), value: valueParts.join(":").trim() };
+      });
+    }
+
+    // Fallback to hardcoded specs for specific products
+    if (specs.length === 0) {
+      specs = product.name === "Wenax Q2" ? [
+        { label: "Pod Capacity", value: "3mL/2mL (TPD)" },
+        { label: "Output Power", value: "30W Max" },
+        { label: "Battery Capacity", value: "1250mAh" },
+        { label: "Charging", value: "5V/2A" },
+        { label: "Pod Resistance", value: "0.4/0.6/0.8/1.2Ω" },
+      ] : product.name === "Aegis 5 mini" ? [
+        { label: "Battery Capacity", value: "1500mAh" },
+        { label: "Output Power", value: "60W Max" },
+        { label: "Pod Capacity", value: "4mL" },
+        { label: "Resistance Range", value: "0.1-2.0Ω" },
+        { label: "Charging", value: "5V/2A Type-C" },
+      ] : product.name === "Geekvape Max100 Kit" ? [
+        { label: "Battery", value: "Single 18650 (not included)" },
+        { label: "Output Power", value: "5-100W" },
+        { label: "Pod Capacity", value: "5mL" },
+        { label: "Resistance Range", value: "0.1-3.0Ω" },
+        { label: "Display", value: "1.08 inch TFT" },
+      ] : [];
+    }
 
     specs.forEach((spec) => {
       const li = document.createElement("li");
-      li.textContent = `${spec.label}: ${spec.value}`;
+      li.innerHTML = `<span>${spec.label}</span><span>${spec.value}</span>`;
       specsList.appendChild(li);
     });
   }
