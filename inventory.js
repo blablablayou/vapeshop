@@ -1,4 +1,4 @@
-const PRODUCTS_KEY = "negozioProducts";
+const PRODUCTS_KEY = "negozioProducts_v2";
 const CART_KEY = "negozioCart";
 const SALES_KEY = "negozioSales";
 const LAST_ORDER_KEY = "negozioLastOrder";

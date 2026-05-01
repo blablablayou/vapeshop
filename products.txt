@@ -1,4 +1,12 @@
-Wenax Q2|Pods|800|24|images/wenax-q2.svg|Premium all-in-one pod device with a sleek design and strong flavor delivery.|Pod Capacity: 3mL/2mL (TPD), Output Power: 30W Max, Battery Capacity: 1250mAh, Charging: 5V/2A, Pod Resistance: 0.4/0.6/0.8/1.2Ω
-MONOCHROME HOODIE|Tops|85|15|https://images.unsplash.com/photo-1503342452485-86e52a086be9?auto=format&fit=crop&w=180&q=80|Heavyweight hoodie with premium finish. Comfort meets style.|Material: 100% Cotton, Sizes: S-XXL, Colors: Black/White/Gray
-TAILORED PANTS|Bottoms|95|20|https://images.unsplash.com/photo-1520975917568-2b4a4bf7150d?auto=format&fit=crop&w=180&q=80|Modern fit pants with clean lines. Versatile and comfortable.|Material: Polyester Blend, Sizes: 28-40, Fit: Modern Slim
-CLASSIC CAP|Accessories|35|30|https://images.unsplash.com/photo-1520975917568-2b4a4bf7150d?auto=format&fit=crop&w=180&q=80|Structured cap with embroidered details. Timeless accessory.|Material: Cotton Twill, Adjustable: Yes, One Size
+Wenax Q2|Pods|800|24|images/Wenax-Q2.webp|Premium all-in-one pod device with a sleek design and strong flavor delivery.|Pod Capacity: 3mL/2mL (TPD), Output Power: 30W Max, Battery Capacity: 1250mAh, Charging: 5V/2A, Pod Resistance: 0.4/0.6/0.8/1.2Ω
+Wenax Q Pro|Pods|1200|20|images/Wenax-Q-Pro.webp|Pro level pod system with adjustable power and airflow.|Pod Capacity: 3mL, Battery: 1200mAh
+Wenax M2|Pods|900|15|images/Wenax-M2.webp|Slim and elegant pod system for everyday use.|Pod Capacity: 2mL, Battery: 800mAh
+Aegis 5 mini|Pods|2000|10|images/Aegis 5 mini.png|Durable and compact mini mod kit with incredible power.|Battery: 1500mAh, Power: 60W
+X Series Black Tornado|Disposable|2000|50|images/Xblack.png|High capacity disposable vape with intense flavor.|Puffs: 10000, Nicotine: 5%
+X1 Series Red Tide|Disposable|2000|50|images/1_f4af4506-a225-4648-9fa0-4a0d1f477bae.webp|Fruity red tide flavor disposable vape.|Puffs: 10000, Nicotine: 5%
+X Slim bar|Disposable|800|100|images/3_ac3c20fb-3e51-42fc-820b-9e1e57b8cfae.webp|Slim disposable bar for on-the-go vaping.|Puffs: 3000, Nicotine: 5%
+BLACK ELITE POD V2 12k PUFFS|Disposable|800|40|images/5_de9121f1-321c-4679-b563-91b5b9cae504.webp|Elite pod disposable with an incredible 12k puffs.|Puffs: 12000, Nicotine: 5%
+Seriously Fruity Strawberry Kiwi|E-Juice|300|30|images/juice1.png|Delicious strawberry and kiwi blend e-juice.|Volume: 60mL, Nicotine: 3mg
+Black Ice formula|E-Juice|500|25|images/juice3.jpg|Cool black ice formula e-liquid for a refreshing hit.|Volume: 100mL, Nicotine: 3mg
+Geekvape Max100 Kit|Accessories|3000|5|images/Geekvape-Max100-Kit-list.webp|Powerful Max100 kit for advanced users.|Battery: Single 18650, Power: 100W
+The Original Vape Juice|E-Juice|300|40|images/juice4.jpg|Classic original vape juice flavor.|Volume: 60mL, Nicotine: 3mg
